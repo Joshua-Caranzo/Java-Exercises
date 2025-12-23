@@ -15,12 +15,11 @@ class BookRentalSystemTest {
     @BeforeEach
     void setup() {
         BookRentalSystem.clearLibrary();
-        
+
         outContent.reset();
         System.setOut(new PrintStream(outContent));
     }
 
-    
     @Test
     void testBookCreation_WhenBookIsNotNullAndNotYetRented_ShouldReturnNotNullandNotRented() {
         Book b = new FictionBook("The Lord of the Rings", "J.R.R. Tolkien",
@@ -45,8 +44,8 @@ class BookRentalSystemTest {
         BookRentalSystem.addBook(new FictionBook("The Lord of the Rings",
                 "J.R.R. Tolkien", 1954));
 
-        BookRentalSystem.addBook(new NonFictionBook("The Tipping Point",
-                "M. Gladwell", 2000));
+        BookRentalSystem.addBook(
+                new NonFictionBook("The Tipping Point", "M. Gladwell", 2000));
         int size = BookRentalSystem.getLibrarySize();
 
         assertEquals(size, 2,
@@ -79,9 +78,8 @@ class BookRentalSystemTest {
         BookRentalSystem.addBook(new NonFictionBook("The Lord of the Rings",
                 "M. Gladwell", 1954));
 
-
         String expectedExceptionMessage = "Index 3 out of bounds for length 2";
-        
+
         IndexOutOfBoundsException actualException = assertThrows(
                 IndexOutOfBoundsException.class, () -> {
                     BookRentalSystem.rentBook(3);
@@ -91,41 +89,41 @@ class BookRentalSystemTest {
         assertEquals(expectedExceptionMessage, actualException.getMessage(),
                 () -> "Unexpected Exception Message");
     }
-    
+
     @Test
     void testDisplayBooks_WhenNonFictionAndFictionBookIsAdded_CompareToExpectedOutput_ShouldReturnTrue() {
         BookRentalSystem.addBook(new FictionBook("The Lord of the Rings",
                 "J.R.R. Tolkien", 1954));
 
-        BookRentalSystem.addBook(new NonFictionBook("The Tipping Point",
-                "M. Gladwell", 1954));
-        
+        BookRentalSystem.addBook(
+                new NonFictionBook("The Tipping Point", "M. Gladwell", 1954));
+
         BookRentalSystem.displayBooks();
-        String expectedOutput = "The Lord of the Rings J.R.R. Tolkien 1954" + 
-                System.lineSeparator() + 
-                "The Tipping Point J.R.R. Tolkien 1954" + System.lineSeparator();
-        String actualOutput = outContent.toString(); 
-        assertEquals(expectedOutput, actualOutput,
-                () -> actualOutput);
+        String expectedOutput = "The Lord of the Rings J.R.R. Tolkien 1954"
+                + System.lineSeparator()
+                + "The Tipping Point M. Gladwell 1954"
+                + System.lineSeparator();
+        String actualOutput = outContent.toString();
+        assertEquals(expectedOutput, actualOutput, () -> actualOutput);
     }
-    
+
     @Test
     void testDisplayRentedBooks_WhenNonFictionAndFictionBookIsAdded_ShouldReturnTrue() {
         BookRentalSystem.addBook(new FictionBook("The Lord of the Rings",
                 "J.R.R. Tolkien", 1954));
 
-        BookRentalSystem.addBook(new NonFictionBook("The Tipping Point",
-                "M. Gladwell", 1954));
-        
+        BookRentalSystem.addBook(
+                new NonFictionBook("The Tipping Point", "M. Gladwell", 1954));
+
         BookRentalSystem.rentBook(0);
 
         BookRentalSystem.displayRentedBooks();
-        String expectedOutput = "The Lord of the Rings J.R.R. Tolkien 1954" + System.lineSeparator();
-        String actualOutput = outContent.toString(); 
-        assertEquals(expectedOutput, actualOutput,
-                () -> actualOutput);
+        String expectedOutput = "The Lord of the Rings J.R.R. Tolkien 1954"
+                + System.lineSeparator();
+        String actualOutput = outContent.toString();
+        assertEquals(expectedOutput, actualOutput, () -> actualOutput);
     }
-    
+
     @Test
     void testMainMethod() {
         BookRentalSystem.main(null);

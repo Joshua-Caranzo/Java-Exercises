@@ -2,8 +2,8 @@ package com.library;
 
 import java.util.ArrayList;
 
-public final class BookRentalSystem{
-    
+public final class BookRentalSystem {
+
     private BookRentalSystem() {
         super();
     }
