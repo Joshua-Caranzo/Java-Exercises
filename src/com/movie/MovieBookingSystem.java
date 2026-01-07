@@ -143,7 +143,6 @@ public class MovieBookingSystem extends BookingSystem {
         final int num6 = 100;
 
         mbs.checkAvailability("8:30 O:clock");
-
         mbs.checkAvailability("08:30 AM");
         mbs.checkAvailability("12:30 PM");
         mbs.bookTicket("12:30 PM", num4);

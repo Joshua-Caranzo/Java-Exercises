@@ -1,17 +1,10 @@
 package com.movie;
 
 import static org.junit.jupiter.api.Assertions.*;
-
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
-import java.util.ArrayList;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import com.library.Book;
-import com.library.BookRentalSystem;
-import com.library.FictionBook;
 
 class MovieBookingSystemTest {
 
