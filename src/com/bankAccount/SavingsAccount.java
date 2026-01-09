@@ -3,21 +3,23 @@ package com.bankAccount;
 public class SavingsAccount extends AbstractBankAccount {
 
     /**
-     * @param ownerName
+     * Name of the account owner.
      */
     private final String ownerName;
 
     /**
-     * @param name
+     * Constructor that sets the ownerName.
+     *
+     * @param name to be reference for ownerName
      */
     public SavingsAccount(final String name) {
         ownerName = name;
-        System.out.println("New Account Created");
-        System.out.println("Account Name:" + ownerName);
     }
 
     /**
-     * @return ownerName
+     * This functions retrieves owner name.
+     *
+     * @return name of the owner
      */
     public String getOwnerName() {
         return ownerName;

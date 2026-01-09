@@ -1,55 +1,92 @@
 package com.bankAccount;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public abstract class AbstractBankAccount implements BankAccount {
+    /**
+     * Global instance of HelperClass.
+     */
+    private static final HelperClass HELPER_CLASS = new HelperClass();
 
     /**
-     * @param balance
+     * List that contains transactionHistory.
+     */
+    private List<Transaction> transactionHistory;
+
+    /**
+     * Current account balance.
      */
     private double balance;
 
     /**
-     * @param balance
+     * Account frozen status.
      */
     private boolean isFrozen;
 
     /**
-     * Sets balance to 0 and isFrozen to false.
+     * This is the default constructor. Sets balance to 0 and isFrozen to false
+     * and transactionHistory as ArrayList.
      */
     public AbstractBankAccount() {
         balance = 0;
         isFrozen = false;
+        transactionHistory = new ArrayList<Transaction>();
     }
 
     /**
-     * @param amount
+     * * This method is for depositing a certain amount.
+     *
+     * @param amount to be deposited
      */
     public void deposit(final double amount) {
-        if (isValidDeposit(amount)) {
-            balance += amount;
-            System.out.println("Deposited: PHP " + amount);
+        try {
+            if (isValidDeposit(amount)) {
+                balance += amount;
+                Transaction t = new Transaction("Deposit", amount);
+                transactionHistory.add(t);
+                System.out.println(
+                        "Deposited: PHP " + HELPER_CLASS.formatBalance(amount));
+            }
+        } catch (BankingException e) {
+            e.printStackTrace();
         }
     }
 
     /**
-     * @param amount
+     * This method is for withdrawing a certain amount.
+     *
+     * @param amount to be withdrawn
      */
     public void withdraw(final double amount) {
-        if (isValidWithdraw(amount)) {
-            balance -= amount;
-            System.out.println("Withdrawn: PHP " + amount);
+        try {
+            if (isValidWithdraw(amount)) {
+                balance -= amount;
+                Transaction t = new Transaction("Withdraw", amount);
+                transactionHistory.add(t);
+                System.out.println(
+                        "Withdrawn: PHP " + HELPER_CLASS.formatBalance(amount));
+            }
+        } catch (BankingException e) {
+            e.printStackTrace();
         }
     }
 
     /**
-     * @return balance
+     * This method retrieves the current balance.
+     *
+     * @return bank amount balance
      */
     public double getBalance() {
-        System.out.println("Balance: PHP " + balance);
+        System.out
+                .println("Balance: PHP " + HELPER_CLASS.formatBalance(balance));
         return balance;
     }
 
     /**
-     * @return isFrozen
+     * This method checks frozen status.
+     *
+     * @return frozen status
      */
     public boolean isFrozen() {
         if (isFrozen) {
@@ -61,7 +98,7 @@ public abstract class AbstractBankAccount implements BankAccount {
     }
 
     /**
-     *
+     * This method sets isFrozen to true.
      */
     public void freezeAccount() {
         if (!isFrozen) {
@@ -73,8 +110,8 @@ public abstract class AbstractBankAccount implements BankAccount {
     }
 
     /**
-    *
-    */
+     * This method sets isFrozen to false.
+     */
     public void unfreezeAccount() {
         if (isFrozen) {
             isFrozen = false;
@@ -84,33 +121,42 @@ public abstract class AbstractBankAccount implements BankAccount {
         }
     }
 
-    private boolean isValidDeposit(final double amount) {
+    /**
+     * This method retrieves transactionHistory.
+     *
+     * @return transaction history
+     */
+    public List<Transaction> getTransactionHistory() {
+        return transactionHistory;
+    }
+
+    private boolean isValidDeposit(final double amount)
+            throws BankingException {
         if (amount > 0) {
             if (!isFrozen) {
                 return true;
+            } else {
+                throw new AccountFrozenException();
             }
-            System.out.println("Account is frozen.");
-            System.out.println("Cannot deposit.");
-            return false;
+        } else {
+            throw new InvalidAmountException(amount);
         }
-        System.out.println("The deposit amount must be positive");
-        return false;
     }
 
-    private boolean isValidWithdraw(final double amount) {
+    private boolean isValidWithdraw(final double amount)
+            throws BankingException {
         if (amount > 0) {
             if (!isFrozen) {
                 if (amount < balance) {
                     return true;
+                } else {
+                    throw new InsufficientFundsException();
                 }
-                System.out.println("Insufficient Balance");
-                return false;
+            } else {
+                throw new AccountFrozenException();
             }
-            System.out.println("Account is frozen.");
-            System.out.println("Cannot withdraw.");
-            return false;
+        } else {
+            throw new InvalidAmountException(amount);
         }
-        System.out.println("The withdrawn amount must be positive");
-        return false;
     }
 }
